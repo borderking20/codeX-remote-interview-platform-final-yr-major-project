@@ -7,11 +7,11 @@ Codex is a full-stack remote interview platform designed to simulate real-world 
 - Real-time coding environment  
 - AI-powered mock interview system  
 - Resume upload and parsing for personalized questions  
-- Role-based interview setup (role, experience, etc.)  
+- Role-based ai interview setup (role, experience, etc.)  
 - Full-screen coding mode  
 - Copy-paste restriction to simulate real interviews  
 - Live communication between candidate and interviewer  
-- Secure authentication using JWT  
+- Secure authentication using clerk  
 - Clean and intuitive UI  
 
 ## 🧠 AI Mock Interview
