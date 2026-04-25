@@ -1,8 +1,11 @@
 import { Link } from "react-router";
 import {
   ArrowRightIcon,
+  BrainCircuitIcon,
   CheckIcon,
   Code2Icon,
+  HeartIcon,
+  LayersIcon,
   SparklesIcon,
   UsersIcon,
   VideoIcon,
@@ -27,9 +30,9 @@ function HomePage() {
 
             <div className="flex flex-col">
               <span className="font-black text-xl bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-mono tracking-wider">
-                Talent IQ
+                CodeX
               </span>
-              <span className="text-xs text-base-content/60 font-medium -mt-1">Code Together</span>
+              <span className="text-xs text-base-content/60 font-medium -mt-1">Where Coding Meets Symbiosis</span>
             </div>
           </Link>
 
@@ -58,7 +61,7 @@ function HomePage() {
                 Code Together,
               </span>
               <br />
-              <span className="text-base-content">Learn Together</span>
+              <span className="text-base-content">Where Coding Meets Symbiosis</span>
             </h1>
 
             <p className="text-xl text-base-content/70 leading-relaxed max-w-xl">
@@ -114,12 +117,52 @@ function HomePage() {
             </div>
           </div>
 
-          {/* RIGHT IMAGE */}
-          <img
-            src="/hero.png"
-            alt="CodeCollab Platform"
-            className="w-full h-auto rounded-3xl shadow-2xl border-4 border-base-100 hover:scale-105 transition-transform duration-500"
-          />
+          {/* RIGHT — Image + Practice Cards */}
+          <div className="grid lg:grid-cols-[1fr_auto] gap-6 items-start">
+            {/* HERO IMAGE - stays in same position */}
+            <img
+              src="/hero.png"
+              alt="CodeCollab Platform"
+              className="w-full h-auto rounded-3xl shadow-2xl border-4 border-base-100 hover:scale-105 transition-transform duration-500"
+            />
+
+            {/* PRACTICE CARDS - right side */}
+            <div className="hidden lg:flex flex-col gap-4 min-w-[200px] max-w-[220px] self-center">
+              {/* Practice with AI Card */}
+              <SignInButton mode="modal">
+                <div className="group cursor-pointer card bg-base-100 shadow-xl border border-primary/20 hover:border-primary/60 hover:shadow-primary/20 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                  <div className="card-body p-5">
+                    <div className="size-12 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                      <BrainCircuitIcon className="size-6 text-primary" />
+                    </div>
+                    <h3 className="font-bold text-sm text-base-content">Practice with AI</h3>
+                    <p className="text-xs text-base-content/60 mt-1 leading-relaxed">AI-powered mock interviews & instant feedback</p>
+                    <div className="mt-3 flex items-center gap-1 text-primary text-xs font-semibold">
+                      <span>Try Now</span>
+                      <ArrowRightIcon className="size-3 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              </SignInButton>
+
+              {/* Practice DSA Card */}
+              <SignInButton mode="modal">
+                <div className="group cursor-pointer card bg-base-100 shadow-xl border border-secondary/20 hover:border-secondary/60 hover:shadow-secondary/20 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                  <div className="card-body p-5">
+                    <div className="size-12 bg-gradient-to-br from-secondary/20 to-accent/20 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                      <LayersIcon className="size-6 text-secondary" />
+                    </div>
+                    <h3 className="font-bold text-sm text-base-content">Practice DSA</h3>
+                    <p className="text-xs text-base-content/60 mt-1 leading-relaxed">Solve curated problems with real-time execution</p>
+                    <div className="mt-3 flex items-center gap-1 text-secondary text-xs font-semibold">
+                      <span>Solve Now</span>
+                      <ArrowRightIcon className="size-3 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              </SignInButton>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -176,6 +219,41 @@ function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* FOOTER */}
+      <footer className="bg-base-100 border-t border-base-300 mt-4">
+        <div className="max-w-7xl mx-auto px-4 py-10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-3">
+              <div className="size-9 rounded-xl bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center shadow-md">
+                <SparklesIcon className="size-5 text-white" />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-black text-lg bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-mono tracking-wider">CodeX</span>
+                <span className="text-xs text-base-content/50 -mt-0.5">Where Coding Meets Symbiosis</span>
+              </div>
+            </Link>
+
+            {/* Center links */}
+            <div className="flex items-center gap-6 text-sm text-base-content/60">
+              <SignInButton mode="modal"><button className="hover:text-primary transition-colors">Get Started</button></SignInButton>
+              <SignInButton mode="modal"><button className="hover:text-primary transition-colors">Practice DSA</button></SignInButton>
+              <SignInButton mode="modal"><button className="hover:text-primary transition-colors">AI Interview</button></SignInButton>
+            </div>
+
+            {/* Right — credits */}
+            <div className="flex flex-col items-center md:items-end gap-1">
+              <p className="text-sm text-base-content/50 flex items-center gap-1.5">
+                Built with <HeartIcon className="size-4 text-red-500 fill-red-500" /> by Students of UCER
+              </p>
+              <p className="text-xs text-base-content/40">
+                © {new Date().getFullYear()} CodeX. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

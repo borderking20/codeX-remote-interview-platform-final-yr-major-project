@@ -33,6 +33,30 @@ export const PROBLEMS = {
       "Only one valid answer exists",
     ],
     starterCode: {
+      cpp: `#include<bits/stdc++.h>
+using namespace std;
+
+vector<int> twoSum(vector<int>& nums, int target) {
+    // Write your solution here
+    
+    return {};
+}
+
+int main() {
+    vector<int> v1 = {2, 7, 11, 15};
+    vector<int> r1 = twoSum(v1, 9);
+    cout << "[" << r1[0] << "," << r1[1] << "]" << endl;
+
+    vector<int> v2 = {3, 2, 4};
+    vector<int> r2 = twoSum(v2, 6);
+    cout << "[" << r2[0] << "," << r2[1] << "]" << endl;
+
+    vector<int> v3 = {3, 3};
+    vector<int> r3 = twoSum(v3, 6);
+    cout << "[" << r3[0] << "," << r3[1] << "]" << endl;
+
+    return 0;
+}`,
       javascript: `function twoSum(nums, target) {
   // Write your solution here
   
@@ -67,6 +91,7 @@ class Solution {
 }`,
     },
     expectedOutput: {
+      cpp: "[0,1]\n[1,2]\n[0,1]",
       javascript: "[0,1]\n[1,2]\n[0,1]",
       python: "[0, 1]\n[1, 2]\n[0, 1]",
       java: "[0, 1]\n[1, 2]\n[0, 1]",
@@ -94,6 +119,35 @@ class Solution {
     ],
     constraints: ["1 ≤ s.length ≤ 10⁵", "s[i] is a printable ascii character"],
     starterCode: {
+      cpp: `#include<bits/stdc++.h>
+using namespace std;
+
+void reverseString(vector<char>& s) {
+    // Write your solution here
+    
+}
+
+int main() {
+    vector<char> test1 = {'h','e','l','l','o'};
+    reverseString(test1);
+    cout << "[";
+    for(int i = 0; i < (int)test1.size(); i++) {
+        cout << "\"" << test1[i] << "\"";
+        if(i < (int)test1.size()-1) cout << ",";
+    }
+    cout << "]" << endl;
+
+    vector<char> test2 = {'H','a','n','n','a','h'};
+    reverseString(test2);
+    cout << "[";
+    for(int i = 0; i < (int)test2.size(); i++) {
+        cout << "\"" << test2[i] << "\"";
+        if(i < (int)test2.size()-1) cout << ",";
+    }
+    cout << "]" << endl;
+
+    return 0;
+}`,
       javascript: `function reverseString(s) {
   // Write your solution here
   
@@ -139,6 +193,7 @@ class Solution {
 }`,
     },
     expectedOutput: {
+      cpp: '["o","l","l","e","h"]\n["h","a","n","n","a","H"]',
       javascript: '["o","l","l","e","h"]\n["h","a","n","n","a","H"]',
       python: "['o', 'l', 'l', 'e', 'h']\n['h', 'a', 'n', 'n', 'a', 'H']",
       java: "[o, l, l, e, h]\n[h, a, n, n, a, H]",
@@ -174,6 +229,22 @@ class Solution {
     ],
     constraints: ["1 ≤ s.length ≤ 2 * 10⁵", "s consists only of printable ASCII characters"],
     starterCode: {
+      cpp: `#include<bits/stdc++.h>
+using namespace std;
+
+bool isPalindrome(string s) {
+    // Write your solution here
+    
+    return false;
+}
+
+int main() {
+    cout << (isPalindrome("A man, a plan, a canal: Panama") ? "true" : "false") << endl;
+    cout << (isPalindrome("race a car") ? "true" : "false") << endl;
+    cout << (isPalindrome(" ") ? "true" : "false") << endl;
+
+    return 0;
+}`,
       javascript: `function isPalindrome(s) {
   // Write your solution here
   
@@ -206,6 +277,7 @@ print(isPalindrome(" "))  # Expected: True`,
 }`,
     },
     expectedOutput: {
+      cpp: "true\nfalse\ntrue",
       javascript: "true\nfalse\ntrue",
       python: "True\nFalse\nTrue",
       java: "true\nfalse\ntrue",
@@ -240,6 +312,27 @@ print(isPalindrome(" "))  # Expected: True`,
     ],
     constraints: ["1 ≤ nums.length ≤ 10⁵", "-10⁴ ≤ nums[i] ≤ 10⁴"],
     starterCode: {
+      cpp: `#include<bits/stdc++.h>
+using namespace std;
+
+int maxSubArray(vector<int>& nums) {
+    // Write your solution here
+    
+    return 0;
+}
+
+int main() {
+    vector<int> v1 = {-2,1,-3,4,-1,2,1,-5,4};
+    cout << maxSubArray(v1) << endl;
+
+    vector<int> v2 = {1};
+    cout << maxSubArray(v2) << endl;
+
+    vector<int> v3 = {5,4,-1,7,8};
+    cout << maxSubArray(v3) << endl;
+
+    return 0;
+}`,
       javascript: `function maxSubArray(nums) {
   // Write your solution here
   
@@ -272,6 +365,7 @@ print(maxSubArray([5,4,-1,7,8]))  # Expected: 23`,
 }`,
     },
     expectedOutput: {
+      cpp: "6\n1\n23",
       javascript: "6\n1\n23",
       python: "6\n1\n23",
       java: "6\n1\n23",
@@ -305,6 +399,24 @@ print(maxSubArray([5,4,-1,7,8]))  # Expected: 23`,
     ],
     constraints: ["n == height.length", "2 ≤ n ≤ 10⁵", "0 ≤ height[i] ≤ 10⁴"],
     starterCode: {
+      cpp: `#include<bits/stdc++.h>
+using namespace std;
+
+int maxArea(vector<int>& height) {
+    // Write your solution here
+    
+    return 0;
+}
+
+int main() {
+    vector<int> v1 = {1,8,6,2,5,4,8,3,7};
+    cout << maxArea(v1) << endl;
+
+    vector<int> v2 = {1,1};
+    cout << maxArea(v2) << endl;
+
+    return 0;
+}`,
       javascript: `function maxArea(height) {
   // Write your solution here
   
@@ -334,6 +446,7 @@ print(maxArea([1,1]))  # Expected: 1`,
 }`,
     },
     expectedOutput: {
+      cpp: "49\n1",
       javascript: "49\n1",
       python: "49\n1",
       java: "49\n1",
@@ -342,6 +455,11 @@ print(maxArea([1,1]))  # Expected: 1`,
 };
 
 export const LANGUAGE_CONFIG = {
+  cpp: {
+    name: "C++",
+    icon: "/cpp.png",
+    monacoLang: "cpp",
+  },
   javascript: {
     name: "JavaScript",
     icon: "/javascript.png",

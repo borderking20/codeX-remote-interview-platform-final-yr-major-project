@@ -7,6 +7,10 @@ import DashboardPage from "./pages/DashboardPage";
 import ProblemPage from "./pages/ProblemPage";
 import ProblemsPage from "./pages/ProblemsPage";
 import SessionPage from "./pages/SessionPage";
+import MockInterviewPage from "./pages/MockInterviewPage";
+import InterviewSessionPage from "./pages/InterviewSessionPage";
+import HistoryPage from "./pages/HistoryPage";
+import ReportPage from "./pages/ReportPage";
 
 function App() {
   const { isSignedIn, isLoaded } = useUser();
@@ -23,6 +27,12 @@ function App() {
         <Route path="/problems" element={isSignedIn ? <ProblemsPage /> : <Navigate to={"/"} />} />
         <Route path="/problem/:id" element={isSignedIn ? <ProblemPage /> : <Navigate to={"/"} />} />
         <Route path="/session/:id" element={isSignedIn ? <SessionPage /> : <Navigate to={"/"} />} />
+        
+        {/* MOCK INTERVIEW ROUTES */}
+        <Route path="/mock-interview" element={isSignedIn ? <MockInterviewPage /> : <Navigate to={"/"} />} />
+        <Route path="/mock-interview/session/:id" element={isSignedIn ? <InterviewSessionPage /> : <Navigate to={"/"} />} />
+        <Route path="/mock-interview/history" element={isSignedIn ? <HistoryPage /> : <Navigate to={"/"} />} />
+        <Route path="/mock-interview/report/:id" element={isSignedIn ? <ReportPage /> : <Navigate to={"/"} />} />
       </Routes>
 
       <Toaster toastOptions={{ duration: 3000 }} />

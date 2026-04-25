@@ -1,5 +1,7 @@
 import { useUser } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { io } from "socket.io-client";
+import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router";
 import { useEndSession, useJoinSession, useSessionById } from "../hooks/useSessions";
 import { PROBLEMS } from "../data/problems";
@@ -46,6 +48,67 @@ function SessionPage() {
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
   const [code, setCode] = useState(problemData?.starterCode?.[selectedLanguage] || "");
 
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const socketRef = useRef(null);
+
+  // Initialize socket connection
+  useEffect(() => {
+    socketRef.current = io("http://localhost:3000");
+
+    socketRef.current.on("connect", () => {
+      if (id) {
+        socketRef.current.emit("join-session", id);
+      }
+    });
+
+    socketRef.current.on("code-change", (newCode) => {
+      setCode(newCode);
+    });
+
+    socketRef.current.on("language-change", (newLang) => {
+      setSelectedLanguage(newLang);
+    });
+
+    socketRef.current.on("code-run-result", (result) => {
+      setOutput(result);
+      setIsRunning(false);
+    });
+
+    socketRef.current.on("participant-exited-fullscreen", () => {
+      if (isHost) {
+        toast.error("Warning: The interviewee has exited fullscreen mode!", { duration: 5000 });
+      }
+    });
+
+    socketRef.current.on("participant-rejected-fullscreen", () => {
+      if (isHost) {
+        toast.error("Warning: The interviewee rejected to enter full screen mode!", { duration: 5000 });
+      }
+    });
+
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, [id, isHost]);
+
+  // Handle Fullscreen events
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setIsFullscreen(false);
+        if (isParticipant) {
+          socketRef.current?.emit("participant-exited-fullscreen", { sessionId: id });
+          toast.error("You must remain in fullscreen mode during the interview.");
+        }
+      } else {
+        setIsFullscreen(true);
+      }
+    };
+    
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, [isParticipant, id]);
+
   // auto-join session if user is not already a participant and not the host
   useEffect(() => {
     if (!session || !user || loadingSession) return;
@@ -77,6 +140,15 @@ function SessionPage() {
     const starterCode = problemData?.starterCode?.[newLang] || "";
     setCode(starterCode);
     setOutput(null);
+
+    // Emit changes via socket
+    socketRef.current?.emit("language-change", { sessionId: id, language: newLang });
+    socketRef.current?.emit("code-change", { sessionId: id, code: starterCode });
+  };
+
+  const handleCodeChange = (value) => {
+    setCode(value);
+    socketRef.current?.emit("code-change", { sessionId: id, code: value });
   };
 
   const handleRunCode = async () => {
@@ -86,6 +158,9 @@ function SessionPage() {
     const result = await executeCode(selectedLanguage, code);
     setOutput(result);
     setIsRunning(false);
+
+    // Emit run result via socket
+    socketRef.current?.emit("code-run-result", { sessionId: id, output: result });
   };
 
   const handleEndSession = () => {
@@ -94,6 +169,45 @@ function SessionPage() {
       endSessionMutation.mutate(id, { onSuccess: () => navigate("/dashboard") });
     }
   };
+
+  const enterFullscreen = () => {
+    document.documentElement.requestFullscreen().catch((err) => {
+      toast.error(`Error attempting to enable fullscreen: ${err.message}`);
+    });
+  };
+
+  const rejectFullscreen = () => {
+    socketRef.current?.emit("participant-rejected-fullscreen", { sessionId: id });
+    toast.error("You declined fullscreen. The interviewer has been notified.");
+  };
+
+  // If the user is the participant and not in fullscreen, block the UI
+  if (isParticipant && !isFullscreen) {
+    return (
+      <div className="h-screen bg-base-100 flex flex-col items-center justify-center relative overflow-hidden">
+        {/* Blurred background preview of the app behind the overlay */}
+        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none filter blur-sm">
+          <Navbar />
+          <div className="p-10"><div className="skeleton w-full h-96"></div></div>
+        </div>
+        
+        <div className="z-10 bg-base-200 p-10 rounded-2xl shadow-2xl border border-base-300 max-w-lg text-center">
+          <h2 className="text-3xl font-bold mb-4 text-base-content">Action Required</h2>
+          <p className="text-base-content/70 mb-8">
+            This interview session requires you to be in full screen mode to ensure a fair environment.
+          </p>
+          <div className="flex gap-4 justify-center">
+            <button onClick={rejectFullscreen} className="btn btn-outline btn-error">
+              Decline
+            </button>
+            <button onClick={enterFullscreen} className="btn btn-primary">
+              Enter Full Screen
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen bg-base-100 flex flex-col">
@@ -153,7 +267,20 @@ function SessionPage() {
                     </div>
                   </div>
 
-                  <div className="p-6 space-y-6">
+                  <div 
+                    className="p-6 space-y-6 select-none"
+                    onCopy={(e) => {
+                      e.preventDefault();
+                      toast.error("Copying is disabled during the interview!");
+                    }}
+                    onKeyDown={(e) => {
+                      if ((e.ctrlKey || e.metaKey) && (e.key === "c" || e.key === "v")) {
+                        e.preventDefault();
+                        toast.error("Keyboard shortcuts are disabled!");
+                      }
+                    }}
+                    tabIndex={0}
+                  >
                     {/* problem desc */}
                     {problemData?.description && (
                       <div className="bg-base-100 rounded-xl shadow-sm p-5 border border-base-300">
@@ -237,7 +364,7 @@ function SessionPage() {
                       code={code}
                       isRunning={isRunning}
                       onLanguageChange={handleLanguageChange}
-                      onCodeChange={(value) => setCode(value)}
+                      onCodeChange={handleCodeChange}
                       onRunCode={handleRunCode}
                     />
                   </Panel>

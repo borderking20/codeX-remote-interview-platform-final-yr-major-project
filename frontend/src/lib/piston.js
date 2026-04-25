@@ -1,12 +1,7 @@
-// Piston API is a service for code execution
+// This file now acts as a proxy client to our JDoodle backend route
+// We kept the filename as "piston.js" to avoid breaking existing imports.
 
-const PISTON_API = "https://emkc.org/api/v2/piston";
-
-const LANGUAGE_VERSIONS = {
-  javascript: { language: "javascript", version: "18.15.0" },
-  python: { language: "python", version: "3.10.0" },
-  java: { language: "java", version: "15.0.2" },
-};
+const API_URL = "http://localhost:3000/api/execute";
 
 /**
  * @param {string} language - programming language
@@ -15,55 +10,37 @@ const LANGUAGE_VERSIONS = {
  */
 export async function executeCode(language, code) {
   try {
-    const languageConfig = LANGUAGE_VERSIONS[language];
-
-    if (!languageConfig) {
-      return {
-        success: false,
-        error: `Unsupported language: ${language}`,
-      };
-    }
-
-    const response = await fetch(`${PISTON_API}/execute`, {
+    const response = await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        language: languageConfig.language,
-        version: languageConfig.version,
-        files: [
-          {
-            name: `main.${getFileExtension(language)}`,
-            content: code,
-          },
-        ],
+        language: language,
+        code: code,
       }),
     });
 
     if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
       return {
         success: false,
-        error: `HTTP error! status: ${response.status}`,
+        error: errorData?.error || `HTTP error! status: ${response.status}`,
       };
     }
 
     const data = await response.json();
 
-    const output = data.run.output || "";
-    const stderr = data.run.stderr || "";
-
-    if (stderr) {
+    if (!data.success) {
       return {
         success: false,
-        output: output,
-        error: stderr,
+        error: data.error || "Execution failed",
       };
     }
 
     return {
       success: true,
-      output: output || "No output",
+      output: data.output || "No output",
     };
   } catch (error) {
     return {
@@ -73,12 +50,3 @@ export async function executeCode(language, code) {
   }
 }
 
-function getFileExtension(language) {
-  const extensions = {
-    javascript: "js",
-    python: "py",
-    java: "java",
-  };
-
-  return extensions[language] || "txt";
-}
