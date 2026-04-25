@@ -1,79 +1,107 @@
-<h1 align="center">✨ Full-Stack Interview Platform ✨</h1>
+# Codex – Remote Interview Platform
 
-![Demo App](/frontend/public/screenshot-for-readme.png)
+Codex is a full-stack remote interview platform designed to simulate real-world technical interviews. It provides a seamless environment where candidates can write, compile, and submit code in real time while interacting with interviewers or AI.
 
-✨ Highlights:
+## 🚀 Features
 
-- 🧑‍💻 VSCode-Powered Code Editor
-- 🔐 Authentication via Clerk
-- 🎥 1-on-1 Video Interview Rooms
-- 🧭 Dashboard with Live Stats
-- 🔊 Mic & Camera Toggle, Screen Sharing & Recording
-- 💬 Real-time Chat Messaging
-- ⚙️ Secure Code Execution in Isolated Environment
-- 🎯 Auto Feedback — Success / Fail based on test cases
-- 🎉 Confetti on Success + Notifications on Fail
-- 🧩 Practice Problems Page (solo coding mode)
-- 🔒 Room Locking — allows only 2 participants
-- 🧠 Background Jobs with Inngest (async tasks)
-- 🧰 REST API with Node.js & Express
-- ⚡ Data Fetching & Caching via TanStack Query
-- 🤖 CodeRabbit for PR Analysis & Code Optimization
-- 🧑‍💻 Git & GitHub Workflow (branches, PRs, merges)
-- 🚀 Deployment on Sevalla (free-tier friendly)
+- Real-time coding environment  
+- AI-powered mock interview system  
+- Resume upload and parsing for personalized questions  
+- Role-based interview setup (role, experience, etc.)  
+- Full-screen coding mode  
+- Copy-paste restriction to simulate real interviews  
+- Live communication between candidate and interviewer  
+- Secure authentication using JWT  
+- Clean and intuitive UI  
 
----
+## 🧠 AI Mock Interview
 
-## 🧪 .env Setup
+- Users can practice interviews with AI  
+- Dynamic question generation based on:
+  - Selected role  
+  - Experience level  
+  - Resume content  
+- Instant feedback and evaluation  
 
-### Backend (`/backend`)
+## 🛠️ Tech Stack
+
+### Frontend
+- React  
+- Next.js  
+- Tailwind CSS  
+
+### Backend
+- Node.js  
+- Express.js  
+
+### Database
+- MongoDB  
+
+### Other Tools & Services
+- groq API (AI integration)  
+- Clerk (Authentication)  
+- mongoDB (Real-time backend services)  
+- Stream (Communication)  
+
+## 📦 Installation
 
 ```bash
-PORT=3000
-NODE_ENV=development
-
-DB_URL=your_mongodb_connection_url
-
-INNGEST_EVENT_KEY=your_inngest_event_key
-INNGEST_SIGNING_KEY=your_inngest_signing_key
-
-STREAM_API_KEY=your_stream_api_key
-STREAM_API_SECRET=your_stream_api_secret
-
-CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-CLERK_SECRET_KEY=your_clerk_secret_key
-
-CLIENT_URL=http://localhost:5173
+git clone https://github.com/your-username/codex.git
+cd codex
 ```
 
-### Frontend (`/frontend`)
+### Setup Backend
 
 ```bash
-VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-
-VITE_API_URL=http://localhost:3000/api
-
-VITE_STREAM_API_KEY=your_stream_api_key
-```
-
----
-
-## 🔧 Run the Backend
-
-```bash
-
 cd backend
 npm install
 npm run dev
 ```
 
----
+### Setup Frontend
 
-## 🔧 Run the Frontend
-
-```
-bash
+```bash
 cd frontend
 npm install
 npm run dev
 ```
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the backend:
+
+```
+PORT=5000
+MONGO_URI=your_mongodb_connection
+JWT_SECRET=your_secret
+GEMINI_API_KEY=your_api_key
+```
+
+## 📌 Usage
+
+1. Sign up / Log in  
+2. Choose:
+   - Start Interview  
+   - AI Mock Interview  
+3. Fill in details (role, experience, resume)  
+4. Start coding and answering questions  
+
+## 🎯 Goal
+
+The goal of Codex is to eliminate the gap between preparation and real interviews by providing a structured, realistic, and scalable platform.
+
+## 📈 Future Improvements
+
+- Video proctoring  
+- Plagiarism detection  
+- Interview analytics dashboard  
+- Multi-language compiler support  
+- Company-specific interview tracks  
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, open an issue first to discuss what you'd like to change.
+
+## 📄 License
+
+This project is licensed under the MIT License.
